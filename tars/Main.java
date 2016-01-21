@@ -1,12 +1,19 @@
 package tars;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import tars.model.LifeEngine;
 
 /**
  * Created by tim on 20.01.16.
  */
-
-
 
 /* Небольшая справка по редактированию.
  *  у объекта m.en есть такие функции, которые тебе пригодятся, чтобы задавать параметры:
@@ -24,13 +31,28 @@ import tars.model.LifeEngine;
  *
  *  Вот и все. Также в строке "m.en = ne LifeEngine(20,20)" можешь изменить размер поля, изменив значение аргумента.
  *          */
-public class Main {
+public class Main extends Application{
     LifeEngine en;
+    Stage stage;
     public static void main(String[] args){
-        Main m = new Main();
-        m.en = new LifeEngine(20,20);
 
+        launch(args);
 
+    }
+    public void start(Stage primStage){
+        stage = new Stage();
+        primStage = stage;
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(Main.class.getResource("view/Root.fxml"));
+        AnchorPane pane = new AnchorPane();
+        try{
+            pane = loader.load();
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        primStage.setTitle("Game of LIFE");
+        primStage.setScene(new Scene(pane));
+        primStage.show();
     }
     void showFieldOnConsole(LifeEngine en){
         System.out.println("New step");

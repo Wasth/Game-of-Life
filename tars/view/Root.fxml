@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tars.control.Handler">
+  <children>
+    <MenuBar layoutX="0.0" layoutY="0.0" prefHeight="26.0" prefWidth="600.0">
+      <menus>
+        <Menu mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Close" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+          <items>
+            <MenuItem mnemonicParsing="false" text="Delete" />
+          </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+          <items>
+            <MenuItem mnemonicParsing="false" text="About" />
+          </items>
+        </Menu>
+      </menus>
+    </MenuBar>
+    <Button layoutX="14.0" layoutY="375.0" mnemonicParsing="false" text="Autorun" />
+    <Button layoutX="103.0" layoutY="375.0" mnemonicParsing="false" onAction="#clickNextGen" text="Next generation" />
+    <Button layoutX="248.0" layoutY="375.0" mnemonicParsing="false" text="Stop" />
+    <Button layoutX="520.0" layoutY="375.0" mnemonicParsing="false" text="Clean" />
+    <FlowPane fx:id="pane" layoutX="0.0" layoutY="26.0" prefHeight="337.0" prefWidth="600.0" />
+  </children>
+</AnchorPane>
