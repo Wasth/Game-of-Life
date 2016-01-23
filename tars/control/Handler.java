@@ -1,9 +1,12 @@
 package tars.control;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -18,11 +21,14 @@ import tars.model.LifeEngine;
 public class Handler{
     @FXML
     FlowPane pane;
-    public static int runTime = 250;
-    public static boolean stop = false;
-    volatile LifeEngine en;
     @FXML
     volatile GridPane fieldPane;
+    @FXML
+    ChoiceBox<Integer> speedChoiceBox;
+    ObservableList<Integer> speedList = FXCollections.observableArrayList();
+    public static int runTime = 100;
+    public static boolean stop = false;
+    volatile LifeEngine en;
     volatile Rectangle rectangle [] [];
     @FXML
     void initialize() throws InterruptedException {
@@ -31,6 +37,18 @@ public class Handler{
         rectangle = new Rectangle[30][50];
         fieldPane = new GridPane();
         pane.setAlignment(Pos.CENTER);
+        speedChoiceBox.getItems().removeAll();
+        speedList.add(50);
+        speedList.add(100);
+        speedList.add(150);
+        speedList.add(200);
+        speedList.add(300);
+        speedList.add(500);
+        speedList.add(750);
+        speedList.add(1000);
+        speedList.add(2000);
+        speedChoiceBox.setValue(50);
+        speedChoiceBox.setItems(speedList);
         for(int i = 0;i < en.getMaxSizeX();i++){
             for(int j = 0;j < en.getMaxSizeY();j++){
                 rectangle[i][j] = new Rectangle(10,10);
@@ -42,7 +60,6 @@ public class Handler{
         }
         pane.getChildren().add(fieldPane);
         setRectangles();
-
     }
      synchronized void setRectangles(){
          fieldPane.getChildren().clear();
@@ -96,7 +113,7 @@ public class Handler{
                     };
                     Platform.runLater(r);
                     try {
-                        Thread.sleep(runTime);
+                        Thread.sleep(speedChoiceBox.getValue());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

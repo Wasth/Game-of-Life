@@ -2,6 +2,7 @@
 
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
@@ -28,9 +29,20 @@
       </menus>
     </MenuBar>
     <Button layoutX="14.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickAutorun" text="Autorun" />
-    <Button layoutX="103.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickNextGen" text="Next generation" />
-    <Button layoutX="243.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickStop" text="Stop" />
-    <Button layoutX="477.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickClear" text="Clear" />
+    <Button fx:id="nextButton" layoutX="341.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickNextGen" text="Next generation" />
+    <Button layoutX="275.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickStop" text="Stop" />
+    <Button fx:id="clearButton" layoutX="477.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickClear" text="Clear" />
     <FlowPane fx:id="pane" layoutX="0.0" layoutY="30.0" prefHeight="330.0" prefWidth="550.0" />
+    <ChoiceBox fx:id="speedChoiceBox" layoutX="101.0" layoutY="376.0">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Item 1" />
+          <String fx:value="Item 2" />
+          <String fx:value="Item 3" />
+        </FXCollections>
+      </items>
+    </ChoiceBox>
+    <Label layoutX="189.0" layoutY="379.0" text="Run time" />
+    <Separator layoutX="1.0" layoutY="360.0" prefWidth="550.0" />
   </children>
 </AnchorPane>
