@@ -18,37 +18,22 @@ public class FieldHandler implements EventHandler<Event> {
     Rectangle[][] rect;
     LifeEngine en;
     GridPane pane;
-    FieldHandler(int x, int y, Rectangle[][] rect, LifeEngine en, GridPane pane){
+    Handler hand;
+    FieldHandler(int x, int y, Handler hand){
         this.x = x;
         this.y = y;
-        this.rect = rect;
-        this.en = en;
-        this.pane = pane;
+        this.hand = hand;
+        this.rect = hand.rectangle;
+        this.en = hand.en;
+        this.pane = hand.fieldPane;
     }
     public void handle(Event event) {
-                System.out.println(x+" "+y);
-                if(en.getField()[x][y].equals("alive")){
-                    en.setValue(x,y,"dead");
-                }else{
-                    en.setValue(x,y,"alive");
-
-                }
-
-        pane.getChildren().clear();
-        for(int i = 0;i < en.getMaxSizeX();i++){
-            for(int j = 0;j < en.getMaxSizeY();j++){
-                if(en.getField()[i][j].equals("alive")){
-                    rect[i][j].setFill(Color.LIMEGREEN);
-
-                    pane.add(rect[i][j],j,i);
-                }else{
-                    rect[i][j].setFill(Color.BLACK);
-                    pane.add(rect[i][j],j,i);
-                }
-                rect[i][j].setStroke(Color.LIME);
-            }
+        System.out.println(x+" "+y);
+        if(en.getField()[x][y].equals("alive")){
+            en.setValue(x,y,"dead");
+        }else{
+            en.setValue(x,y,"alive");
         }
-
-
+            hand.setRectangles();
     }
 }

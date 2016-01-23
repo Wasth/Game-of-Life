@@ -36,7 +36,7 @@ public class LifeEngine {
 
     }
 
-    public String[][] nextGeneration(){
+    public boolean nextGeneration(){
         for(int i = 0; i < maxSizeX;i++){
             for(int j = 0; j < maxSizeY;j++){
                 if(i == 0 & j == 0){
@@ -295,6 +295,11 @@ public class LifeEngine {
                 }
             }
         }
+        for(int i = 0;i < maxSizeX;i++){
+            for(int j = 0;j < maxSizeY;j++){
+                fieldTmp[i][j] = field[i][j];
+            }
+        }
         for(int i = 0;i < changes.size();i++){
             if(changes.get(i)) {
                 field[cX.get(i)][cY.get(i)] = "alive";
@@ -302,8 +307,16 @@ public class LifeEngine {
                 field[cX.get(i)][cY.get(i)] = "dead";
             }
         }
-
-        return field;
+        boolean notEqual = false;
+        for(int i = 0;i < maxSizeX;i++){
+            for(int j = 0;j < maxSizeY;j++){
+                if(!fieldTmp[i][j].equals(field[i][j])) {
+                    notEqual = true;
+                    break;
+                }
+            }
+        }
+        return notEqual;
     }
     public int getMaxSizeX(){
         return maxSizeX;
@@ -321,6 +334,17 @@ public class LifeEngine {
         this.field[x][y] = value;
     }
     public void clearField(){
-        this.field = null;
+        this.field = new String[maxSizeX][maxSizeY];
+        this.fieldTmp = new String[maxSizeX][maxSizeY];
+        cX = new ArrayList<Integer>();
+        cY = new ArrayList<Integer>();
+        changes = new ArrayList<Boolean>();
+        changesConut = 0;
+        for(int i = 0;i < maxSizeX;i++){
+            for(int j = 0;j < maxSizeY;j++){
+                field[i][j] = "dead";
+                fieldTmp[i][j] = field[i][j];
+            }
+        }
     }
 }

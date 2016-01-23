@@ -9,6 +9,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import tars.control.Handler;
 import tars.model.LifeEngine;
 
 /**
@@ -54,7 +55,10 @@ public class Main extends Application{
         primStage.setScene(new Scene(pane));
         primStage.show();
     }
-    void showFieldOnConsole(LifeEngine en){
+    public void stop(){
+        Handler.stop = true;
+    }
+    public static void showFieldOnConsole(LifeEngine en){
         System.out.println("New step");
         for(int i = 0;i < en.getMaxSizeX();i++){
             for(int j = 0;j < en.getMaxSizeY();j++){
