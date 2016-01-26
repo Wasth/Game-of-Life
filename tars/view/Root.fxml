@@ -3,6 +3,7 @@
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.collections.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
@@ -13,36 +14,46 @@
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem mnemonicParsing="false" text="Close" />
+            <MenuItem mnemonicParsing="false" onAction="#clickLoad" text="Load scene" />
+            <MenuItem mnemonicParsing="false" onAction="#clickSave" text="Save" />
+            <MenuItem mnemonicParsing="false" onAction="#clickSaveAs" text="Save as.." />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem mnemonicParsing="false" onAction="#clickClose" text="Close" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
           <items>
-            <MenuItem mnemonicParsing="false" text="Delete" />
+            <MenuItem mnemonicParsing="false" onAction="#clickSettings" text="Settings" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
           <items>
-            <MenuItem mnemonicParsing="false" text="About" />
+            <MenuItem mnemonicParsing="false" onAction="#clickAbout" text="About" />
           </items>
         </Menu>
       </menus>
     </MenuBar>
-    <Button layoutX="14.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickAutorun" text="Autorun" />
-    <Button fx:id="nextButton" layoutX="341.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickNextGen" text="Next generation" />
-    <Button layoutX="275.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickStop" text="Stop" />
-    <Button fx:id="clearButton" layoutX="477.0" layoutY="376.0" mnemonicParsing="false" onAction="#clickClear" text="Clear" />
     <FlowPane fx:id="pane" layoutX="0.0" layoutY="30.0" prefHeight="330.0" prefWidth="550.0" />
-    <ChoiceBox fx:id="speedChoiceBox" layoutX="101.0" layoutY="376.0">
-      <items>
-        <FXCollections fx:factory="observableArrayList">
-          <String fx:value="Item 1" />
-          <String fx:value="Item 2" />
-          <String fx:value="Item 3" />
-        </FXCollections>
-      </items>
-    </ChoiceBox>
-    <Label layoutX="189.0" layoutY="379.0" text="Run time" />
-    <Separator layoutX="1.0" layoutY="360.0" prefWidth="550.0" />
+    <FlowPane fx:id="buttonPane" alignment="TOP_CENTER" layoutX="0.0" layoutY="368.0" prefHeight="51.0" prefWidth="550.0" rotate="0.0">
+      <children>
+        <Button mnemonicParsing="false" onAction="#clickAutorun" text="Autorun" />
+        <ChoiceBox fx:id="speedChoiceBox" prefWidth="75.0">
+          <items>
+            <FXCollections fx:factory="observableArrayList">
+              <String fx:value="Item 1" />
+              <String fx:value="Item 2" />
+              <String fx:value="Item 3" />
+            </FXCollections>
+          </items>
+        </ChoiceBox>
+        <Label text="Run time" />
+        <Button mnemonicParsing="false" onAction="#clickStop" text="Stop" />
+        <Button fx:id="nextButton" mnemonicParsing="false" onAction="#clickNextGen" text="Next generation" />
+        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clickClear" text="Clear" />
+      </children>
+      <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+    </FlowPane>
   </children>
 </AnchorPane>

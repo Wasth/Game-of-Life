@@ -15,6 +15,7 @@ import java.text.Format;
 public class FieldHandler implements EventHandler<Event> {
     int x;
     int y;
+    public static boolean pressed;
     Rectangle[][] rect;
     LifeEngine en;
     GridPane pane;
@@ -28,7 +29,7 @@ public class FieldHandler implements EventHandler<Event> {
         this.pane = hand.fieldPane;
     }
     public void handle(Event event) {
-        System.out.println(x+" "+y);
+        pressed = true;
         if(en.getField()[x][y].equals("alive")){
             en.setValue(x,y,"dead");
         }else{

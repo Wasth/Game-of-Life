@@ -34,7 +34,7 @@ import tars.model.LifeEngine;
  *          */
 public class Main extends Application{
     LifeEngine en;
-    Stage stage;
+    public static Stage stage;
     public static void main(String[] args){
 
         launch(args);
