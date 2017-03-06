@@ -45,8 +45,8 @@ public class Handler {
     volatile LifeEngine en;
     volatile Rectangle rectangle[][];
     float strokeWidth = 1;
-    float rectWidth = 10;
-    float rectHeight = 10;
+    float rectWidth = 15;
+    float rectHeight = 15;
     @FXML
     void initialize() throws InterruptedException {
         System.out.println("Init GUI");
