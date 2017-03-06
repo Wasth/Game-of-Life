@@ -17,7 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tars.Main;
-import tars.model.LifeEngine;
+import tars.model.*;
 
 import java.io.*;
 
@@ -34,19 +34,19 @@ public class Handler {
     ChoiceBox<Integer> speedChoiceBox;
     @FXML
     FlowPane buttonPane;
-
+    @FXML
+    public static String settingPath = "setting.gs";
+    public  SerializeColor serColor;
+    public  RGBColor colors;
     public static Stage settingStage;
     ObservableList<Integer> speedList = FXCollections.observableArrayList();
-    public static Color deadFillColor;
-    public static Color deadStrokeColor;
-    public static Color aliveFillColor;
-    public static Color aliveStrokeColor;
-
     public static boolean stop = false;
     static String path = "";
     volatile LifeEngine en;
     volatile Rectangle rectangle[][];
-
+    float strokeWidth = 1;
+    float rectWidth;
+    float rectHeight;
     @FXML
     void initialize() throws InterruptedException {
         System.out.println("Init GUI");
@@ -65,19 +65,38 @@ public class Handler {
         speedList.add(750);
         speedList.add(1000);
         speedList.add(2000);
-        deadFillColor = Color.web("030303");
-        deadStrokeColor = Color.web("00ff00");
-        aliveFillColor = Color.web("00ff00");
-        aliveStrokeColor = Color.web("00ff00");
-        speedChoiceBox.setValue(50);
+        if(!new File(settingPath).exists()) {
+            serColor = new SerializeColor();
+            colors = new RGBColor();
+            serColor.deadFillColor = Color.web("030303");
+            serColor.deadStrokeColor = Color.LIMEGREEN;
+            serColor.aliveFillColor = Color.web("00ff00");
+            serColor.aliveStrokeColor = Color.LIMEGREEN;
+            serColor.random = false;
+            colors.setColor(serColor);
+            System.out.printf("Setting file isn't exists\n");
+        }else{
+            try {
+                ObjectInputStream reader = new ObjectInputStream(new FileInputStream(settingPath));
+                colors = (RGBColor) reader.readObject();
+                serColor = new SerializeColor();
+                serColor.setColors(colors);
+                reader.close();
+                System.out.printf("Setting file readed.\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        speedChoiceBox.setValue(300);
         speedChoiceBox.setItems(speedList);
         for (int i = 0; i < en.getMaxSizeX(); i++) {
             for (int j = 0; j < en.getMaxSizeY(); j++) {
                 rectangle[i][j] = new Rectangle(10, 10);
-                rectangle[i][j].addEventHandler(MouseEvent.MOUSE_PRESSED, new FieldHandler(i, j, this));
+                rectangle[i][j].setStrokeWidth(1);
+                rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
             }
         }
-        setRectangles();
+        en.clearField();
         pane.getChildren().add(fieldPane);
         setRectangles();
     }
@@ -87,38 +106,18 @@ public class Handler {
         for (int i = 0; i < en.getMaxSizeX(); i++) {
             for (int j = 0; j < en.getMaxSizeY(); j++) {
                 if (en.getField()[i][j].equals("alive")) {
-                    rectangle[i][j].setFill(aliveFillColor);
-                    rectangle[i][j].setStroke(aliveStrokeColor);
+                    rectangle[i][j].setFill(serColor.aliveFillColor);
+                    rectangle[i][j].setStroke(serColor.aliveStrokeColor);
                     fieldPane.add(rectangle[i][j], j, i);
                 } else {
-                    rectangle[i][j].setFill(deadFillColor);
-                    rectangle[i][j].setStroke(deadStrokeColor);
+                    rectangle[i][j].setFill(serColor.deadFillColor);
+                    rectangle[i][j].setStroke(serColor.deadStrokeColor);
                     fieldPane.add(rectangle[i][j], j, i);
                 }
-
+                rectangle[i][j].setStrokeWidth(strokeWidth);
             }
         }
-
     }
-
-    synchronized void setRectangles(GridPane fieldPane, Rectangle[][] rectangle, LifeEngine en) {
-        fieldPane.getChildren().clear();
-        for (int i = 0; i < en.getMaxSizeX(); i++) {
-            for (int j = 0; j < en.getMaxSizeY(); j++) {
-                if (en.getField()[i][j].equals("alive")) {
-                    rectangle[i][j].setFill(aliveFillColor);
-                    rectangle[i][j].setStroke(aliveStrokeColor);
-                    fieldPane.add(rectangle[i][j], j, i);
-                } else {
-                    rectangle[i][j].setFill(deadFillColor);
-                    rectangle[i][j].setStroke(deadStrokeColor);
-                    fieldPane.add(rectangle[i][j], j, i);
-                }
-            }
-        }
-
-    }
-
     @FXML
     void clickNextGen() {
         boolean tmp = en.nextGeneration();
@@ -190,7 +189,9 @@ public class Handler {
             while ((tmp = reader.readLine()) != null) {
                 cont = cont + tmp + "\n";
             }
+            en.clearField();
             en.setField(getField(cont));
+
             setRectangles();
             reader.close();
         } catch (Exception e) {
@@ -246,6 +247,7 @@ public class Handler {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("view/Setting.fxml"));
         AnchorPane pane = null;
+        SettingsHandler.setHandler(this);
         try {
             pane = (AnchorPane) loader.load();
         } catch (Exception ex) {

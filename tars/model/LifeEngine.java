@@ -16,7 +16,7 @@ public class LifeEngine {
     public LifeEngine(int x,int y){
         maxSizeX = x;
         maxSizeY = y;
-        System.out.printf("Размеры поля %d на %d\n",maxSizeX,maxSizeY);
+        System.out.printf("Init field %d x %d\n",maxSizeX,maxSizeY);
         this.field = new String[maxSizeX][maxSizeY];
         this.fieldTmp = new String[maxSizeX][maxSizeY];
         cX = new ArrayList<>();
@@ -276,8 +276,8 @@ public class LifeEngine {
         this.field[x][y] = value;
     }
     public void clearField(){
-        this.field = new String[maxSizeX][maxSizeY];
-        this.fieldTmp = new String[maxSizeX][maxSizeY];
+        field = new String[maxSizeX][maxSizeY];
+        fieldTmp = new String[maxSizeX][maxSizeY];
         cX = new ArrayList<>();
         cY = new ArrayList<>();
         changes = new ArrayList<>();
