@@ -56,9 +56,9 @@
           <Label text="Size" />
             <FlowPane prefHeight="25.0" prefWidth="285.0">
                <children>
-                <TextField prefWidth="59.0" />
+                <TextField fx:id="fieldWidth" prefWidth="59.0" />
                 <Label prefHeight="16.0" prefWidth="17.0" text=" X" />
-                <TextField prefWidth="59.0" />
+                <TextField fx:id="fieldHeight" prefWidth="59.0" />
                </children>
             </FlowPane>
             <GridPane prefHeight="174.0" prefWidth="265.0">
@@ -72,8 +72,8 @@
               </rowConstraints>
                <children>
                   <Label text="Cell size" />
-                  <TextField prefHeight="26.0" prefWidth="63.0" GridPane.columnIndex="1" />
-                  <TextField prefHeight="26.0" prefWidth="141.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="cellSize" prefHeight="26.0" prefWidth="63.0" GridPane.columnIndex="1" />
+                  <TextField fx:id="strokeSize" prefHeight="26.0" prefWidth="141.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label prefHeight="16.0" prefWidth="72.0" text="Stroke size" GridPane.rowIndex="1" />
                </children>
             </GridPane>

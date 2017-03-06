@@ -35,7 +35,8 @@ public class Handler {
     @FXML
     FlowPane buttonPane;
     @FXML
-    public static String settingPath = "setting.gs";
+    public static String colorSettingPath = "colorSetting.gs";
+    public static String sizeSettingPath = "sizeSettings.gs";
     public  SerializeColor serColor;
     public  RGBColor colors;
     public static Stage settingStage;
@@ -44,14 +45,28 @@ public class Handler {
     static String path = "";
     volatile LifeEngine en;
     volatile Rectangle rectangle[][];
-    float strokeWidth = 1;
-    float rectWidth = 15;
-    float rectHeight = 15;
+    int strokeWidth = 1;
+    int rectWidth = 15;
+    int rectHeight = 15;
+    int lifeH = 30;
+    int lifeW = 50;
     @FXML
     void initialize() throws InterruptedException {
         System.out.println("Init GUI");
-        int lifeH = 30;
-        int lifeW = 50;
+        if(new File(sizeSettingPath).exists()) {
+            try {
+                BufferedReader in = new BufferedReader(new FileReader(sizeSettingPath));
+                lifeW = Integer.parseInt(in.readLine());
+                lifeH = Integer.parseInt(in.readLine());
+                rectWidth = Integer.parseInt(in.readLine());
+                rectHeight = rectWidth;
+                strokeWidth = Integer.parseInt(in.readLine());
+                System.out.printf("Size setting file is read.\n");
+                in.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         int windowW = (int) ((rectWidth+strokeWidth)*lifeW);
         if (windowW < 550) windowW = 550;
         int windowH = (int) (89 + (rectHeight+strokeWidth)*lifeH);
@@ -74,7 +89,7 @@ public class Handler {
         speedList.add(750);
         speedList.add(1000);
         speedList.add(2000);
-        if(!new File(settingPath).exists()) {
+        if(!new File(colorSettingPath).exists()) {
             serColor = new SerializeColor();
             colors = new RGBColor();
             serColor.deadFillColor = Color.web("030303");
@@ -83,15 +98,15 @@ public class Handler {
             serColor.aliveStrokeColor = Color.LIMEGREEN;
             serColor.random = false;
             colors.setColor(serColor);
-            System.out.printf("Setting file isn't exists\n");
+            System.out.printf("Setting file doesn't exist\n");
         }else{
             try {
-                ObjectInputStream reader = new ObjectInputStream(new FileInputStream(settingPath));
+                ObjectInputStream reader = new ObjectInputStream(new FileInputStream(colorSettingPath));
                 colors = (RGBColor) reader.readObject();
                 serColor = new SerializeColor();
                 serColor.setColors(colors);
                 reader.close();
-                System.out.printf("Setting file readed.\n");
+                System.out.printf("Color setting file is read.\n");
             } catch (Exception e) {
                 e.printStackTrace();
             }
