@@ -45,15 +45,24 @@ public class Handler {
     volatile LifeEngine en;
     volatile Rectangle rectangle[][];
     float strokeWidth = 1;
-    float rectWidth;
-    float rectHeight;
+    float rectWidth = 10;
+    float rectHeight = 10;
     @FXML
     void initialize() throws InterruptedException {
         System.out.println("Init GUI");
-        en = new LifeEngine(30, 50);
-        rectangle = new Rectangle[30][50];
+        int lifeH = 30;
+        int lifeW = 50;
+        int windowW = (int) ((rectWidth+strokeWidth)*lifeW);
+        if (windowW < 550) windowW = 550;
+        int windowH = (int) (89 + (rectHeight+strokeWidth)*lifeH);
+        if (windowH < 419) windowH = 419;
+        Main.pane.setPrefWidth(windowW);
+        Main.pane.setPrefHeight(windowH);
+        System.out.println(windowW+" "+windowH);
+        en = new LifeEngine(lifeH, lifeW);
+        rectangle = new Rectangle[lifeH][lifeW];
         fieldPane = new GridPane();
-        buttonPane.setHgap(5);
+        buttonPane.setHgap(15);
         pane.setAlignment(Pos.CENTER);
         speedChoiceBox.getItems().removeAll();
         speedList.add(50);
@@ -91,8 +100,8 @@ public class Handler {
         speedChoiceBox.setItems(speedList);
         for (int i = 0; i < en.getMaxSizeX(); i++) {
             for (int j = 0; j < en.getMaxSizeY(); j++) {
-                rectangle[i][j] = new Rectangle(10, 10);
-                rectangle[i][j].setStrokeWidth(1);
+                rectangle[i][j] = new Rectangle(rectWidth, rectHeight);
+                rectangle[i][j].setStrokeWidth(strokeWidth);
                 rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
             }
         }
