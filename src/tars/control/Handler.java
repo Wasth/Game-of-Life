@@ -67,14 +67,12 @@ public class Handler {
                 e.printStackTrace();
             }
         }
-        int windowW = ((rectWidth+strokeWidth)*lifeW);
+        int windowW = (int) ((rectWidth+strokeWidth)*lifeW);
         if (windowW < 550) windowW = 550;
-        int windowH = (89 + (rectHeight+strokeWidth)*lifeH);
-        Main.stage.setHeight(windowH);
-        Main.stage.setWidth(windowW);
-        /*+(rectWidth/2)-strokeWidth*/
-        //Main.pane.setPrefWidth(windowW);
-        //Main.pane.setPrefHeight(windowH);
+        int windowH = (int) (89 + (rectHeight+strokeWidth)*lifeH);
+        if (windowH < 419) windowH = 419;
+        Main.pane.setPrefWidth(windowW);
+        Main.pane.setPrefHeight(windowH);
         System.out.println(windowW+" "+windowH);
         en = new LifeEngine(lifeH, lifeW);
         rectangle = new Rectangle[lifeH][lifeW];
@@ -191,7 +189,6 @@ public class Handler {
     @FXML
     void clickAbout() {
         Stage stage = new Stage();
-        stage.setResizable(false);
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("view/About.fxml"));
         AnchorPane pane = null;
@@ -213,37 +210,17 @@ public class Handler {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String tmp;
             String size = reader.readLine();
-            lifeH = Integer.parseInt(size.split("_")[0]);
-            lifeW = Integer.parseInt(size.split("_")[1]);
-            System.out.println("Readed - "+lifeH+". Here's "+en.getMaxSizeX());
-            System.out.println("Readed - "+lifeW+". Here's "+en.getMaxSizeY());
+            int width = Integer.parseInt(size.split("_")[0]);
+            int height = Integer.parseInt(size.split("_")[1]);
+            System.out.println("Readed - "+width+". Here's "+en.getMaxSizeX());
+            System.out.println("Readed - "+height+". Here's "+en.getMaxSizeY());
             String cont = size+"\n";
             while ((tmp = reader.readLine()) != null) {
                 cont = cont + tmp + "\n";
             }
-            int windowW = ((rectWidth+strokeWidth)*lifeW);
-            if (windowW < 550) windowW = 550;
-            int windowH = (89 + (rectHeight+strokeWidth)*lifeH);
-            //if (windowH < 419) windowH = 419;
-
-
-            en = new LifeEngine(lifeH,lifeW);
-            rectangle = new Rectangle[lifeH][lifeW];
-            System.out.println(en.getMaxSizeX()+"x-y"+en.getMaxSizeY());
-            for (int i = 0; i < lifeH; i++) {
-                for (int j = 0; j < lifeW; j++) {
-                    rectangle[i][j] = new Rectangle(rectWidth, rectHeight);
-                    rectangle[i][j].setStrokeWidth(strokeWidth);
-                    rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
-                }
-            }
-//            Main.pane.setPrefWidth(windowW);
-//            Main.pane.setPrefHeight(windowH);
-            Main.stage.setHeight(windowH);
-            Main.stage.setWidth(windowW+(rectWidth/2)-strokeWidth);
-
+            en = new LifeEngine(width,height);
             en.clearField();
-            en.setField(getField(cont));
+            en.setField(getField(cont,lifeW,lifeH));
             setRectangles();
 
 
