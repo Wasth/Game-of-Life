@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="600.0000999999975" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="272.0" prefWidth="600.0000999999975" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <VBox alignment="TOP_CENTER" prefHeight="272.0" prefWidth="600.0">
          <children>
@@ -17,7 +17,7 @@
               <Image preserveRatio="true" smooth="true" url="@../res/redstar.jpg" />
             </image>
           </ImageView>
-          <Label prefHeight="36.0" prefWidth="199.0" text="Red Star Software" textAlignment="CENTER" textFill="RED">
+          <Label prefHeight="36.0" prefWidth="217.0" text="Red Star Software" textAlignment="CENTER" textFill="RED">
             <font>
               <Font name="Cantarell Bold" size="25.0" />
             </font>
