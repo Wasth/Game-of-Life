@@ -38,7 +38,9 @@ public class Main extends Application{
             ex.printStackTrace();
         }
         primStage.setTitle("Game of LIFE");
-        primStage.setScene(new Scene(pane));
+        Scene scene = new Scene(pane);
+
+        primStage.setScene(scene);
         primStage.show();
     }
     public void stop(){

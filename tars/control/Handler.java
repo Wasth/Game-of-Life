@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import tars.Main;
 import tars.model.*;
@@ -82,6 +83,9 @@ public class Handler {
         en = new LifeEngine(lifeH, lifeW);
         rectangle = new Rectangle[lifeH][lifeW];
         fieldPane = new GridPane();
+
+        fieldPane.addEventHandler(MouseEvent.MOUSE_DRAGGED,new FieldHandler(0,0,this));
+
         buttonPane.setHgap(15);
         pane.setAlignment(Pos.CENTER);
         speedChoiceBox.getItems().removeAll();
@@ -122,7 +126,7 @@ public class Handler {
             for (int j = 0; j < en.getMaxSizeY(); j++) {
                 rectangle[i][j] = new Rectangle(rectWidth, rectHeight);
                 rectangle[i][j].setStrokeWidth(strokeWidth);
-                rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
+                //rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
             }
         }
         en.clearField();
@@ -204,6 +208,8 @@ public class Handler {
             pane = new AnchorPane();
             ex.printStackTrace();
         }
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(Main.stage);
         stage.setScene(new Scene(pane));
         stage.setTitle("About creator");
         stage.show();
@@ -237,7 +243,7 @@ public class Handler {
                 for (int j = 0; j < lifeW; j++) {
                     rectangle[i][j] = new Rectangle(rectWidth, rectHeight);
                     rectangle[i][j].setStrokeWidth(strokeWidth);
-                    rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
+                    //rectangle[i][j].addEventHandler(MouseEvent.MOUSE_DRAGGED, new FieldHandler(i, j, this));
                 }
             }
             Main.pane.setPrefWidth(windowW);
@@ -313,6 +319,8 @@ public class Handler {
             ex.printStackTrace();
         }
         SettingsHandler.setHandler(this);
+        settingStage.initModality(Modality.WINDOW_MODAL);
+        settingStage.initOwner(Main.stage);
         settingStage.setScene(new Scene(pane));
         settingStage.setTitle("Settings");
         settingStage.show();
