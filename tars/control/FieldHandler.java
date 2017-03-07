@@ -32,7 +32,7 @@ public class FieldHandler implements EventHandler<Event> {
     public void handle(Event event) {
 //        ArrayList<String> selected =
         pressed = true;
-        System.out.println("DRAGGED");
+        //System.out.println("DRAGGED");
         if(en.getField()[x][y].equals("alive")){
             en.setValue(x,y,"dead");
         }else{

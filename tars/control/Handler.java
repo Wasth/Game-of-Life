@@ -243,7 +243,7 @@ public class Handler {
                 for (int j = 0; j < lifeW; j++) {
                     rectangle[i][j] = new Rectangle(rectWidth, rectHeight);
                     rectangle[i][j].setStrokeWidth(strokeWidth);
-                    //rectangle[i][j].addEventHandler(MouseEvent.MOUSE_DRAGGED, new FieldHandler(i, j, this));
+                    rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
                 }
             }
             Main.pane.setPrefWidth(windowW);
