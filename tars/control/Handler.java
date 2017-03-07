@@ -12,9 +12,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import tars.Main;
 import tars.model.*;
@@ -29,13 +31,16 @@ public class Handler {
     @FXML
     FlowPane pane;
     @FXML
+    VBox box;
+    @FXML
     volatile GridPane fieldPane;
     @FXML
     ChoiceBox<Integer> speedChoiceBox;
     @FXML
     FlowPane buttonPane;
     @FXML
-    public static String settingPath = "setting.gs";
+    public static String colorSettingPath = "colorSetting.gs";
+    public static String sizeSettingPath = "sizeSettings.gs";
     public  SerializeColor serColor;
     public  RGBColor colors;
     public static Stage settingStage;
@@ -44,16 +49,44 @@ public class Handler {
     static String path = "";
     volatile LifeEngine en;
     volatile Rectangle rectangle[][];
-    float strokeWidth = 1;
-    float rectWidth;
-    float rectHeight;
+    int strokeWidth = 1;
+    int rectWidth = 15;
+    int rectHeight = 15;
+    int lifeH = 30;
+    int lifeW = 50;
     @FXML
     void initialize() throws InterruptedException {
         System.out.println("Init GUI");
-        en = new LifeEngine(30, 50);
-        rectangle = new Rectangle[30][50];
+        if(new File(sizeSettingPath).exists()) {
+            try {
+                BufferedReader in = new BufferedReader(new FileReader(sizeSettingPath));
+                lifeW = Integer.parseInt(in.readLine());
+                lifeH = Integer.parseInt(in.readLine());
+                rectWidth = Integer.parseInt(in.readLine());
+                rectHeight = rectWidth;
+                strokeWidth = Integer.parseInt(in.readLine());
+                System.out.printf("Size setting file is read.\n");
+                in.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        int windowW = ((rectWidth+strokeWidth)*lifeW);
+        if (windowW < 550) windowW = 550;
+        int windowH = (89 + (rectHeight+strokeWidth)*lifeH);
+        //Main.pane.setPrefHeight(windowH);
+        //Main.pane.setPrefWidth(windowW);
+        /*+(rectWidth/2)-strokeWidth*/
+        //box.setPrefWidth(windowW);
+        //box.setPrefHeight(windowH);
+        System.out.println(windowW+" "+windowH);
+        en = new LifeEngine(lifeH, lifeW);
+        rectangle = new Rectangle[lifeH][lifeW];
         fieldPane = new GridPane();
-        buttonPane.setHgap(5);
+
+        fieldPane.addEventHandler(MouseEvent.MOUSE_DRAGGED,new FieldHandler(0,0,this));
+
+        buttonPane.setHgap(15);
         pane.setAlignment(Pos.CENTER);
         speedChoiceBox.getItems().removeAll();
         speedList.add(50);
@@ -65,7 +98,7 @@ public class Handler {
         speedList.add(750);
         speedList.add(1000);
         speedList.add(2000);
-        if(!new File(settingPath).exists()) {
+        if(!new File(colorSettingPath).exists()) {
             serColor = new SerializeColor();
             colors = new RGBColor();
             serColor.deadFillColor = Color.web("030303");
@@ -74,15 +107,15 @@ public class Handler {
             serColor.aliveStrokeColor = Color.LIMEGREEN;
             serColor.random = false;
             colors.setColor(serColor);
-            System.out.printf("Setting file isn't exists\n");
+            System.out.printf("Setting file doesn't exist\n");
         }else{
             try {
-                ObjectInputStream reader = new ObjectInputStream(new FileInputStream(settingPath));
+                ObjectInputStream reader = new ObjectInputStream(new FileInputStream(colorSettingPath));
                 colors = (RGBColor) reader.readObject();
                 serColor = new SerializeColor();
                 serColor.setColors(colors);
                 reader.close();
-                System.out.printf("Setting file readed.\n");
+                System.out.printf("Color setting file is read.\n");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -91,9 +124,9 @@ public class Handler {
         speedChoiceBox.setItems(speedList);
         for (int i = 0; i < en.getMaxSizeX(); i++) {
             for (int j = 0; j < en.getMaxSizeY(); j++) {
-                rectangle[i][j] = new Rectangle(10, 10);
-                rectangle[i][j].setStrokeWidth(1);
-                rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
+                rectangle[i][j] = new Rectangle(rectWidth, rectHeight);
+                rectangle[i][j].setStrokeWidth(strokeWidth);
+                //rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
             }
         }
         en.clearField();
@@ -165,6 +198,7 @@ public class Handler {
     @FXML
     void clickAbout() {
         Stage stage = new Stage();
+        stage.setResizable(false);
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("view/About.fxml"));
         AnchorPane pane = null;
@@ -174,6 +208,8 @@ public class Handler {
             pane = new AnchorPane();
             ex.printStackTrace();
         }
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(Main.stage);
         stage.setScene(new Scene(pane));
         stage.setTitle("About creator");
         stage.show();
@@ -185,14 +221,42 @@ public class Handler {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String tmp;
-            String cont = "";
+            String size = reader.readLine();
+            lifeH = Integer.parseInt(size.split("_")[0]);
+            lifeW = Integer.parseInt(size.split("_")[1]);
+            System.out.println("Readed - "+lifeH+". Here's "+en.getMaxSizeX());
+            System.out.println("Readed - "+lifeW+". Here's "+en.getMaxSizeY());
+            String cont = size+"\n";
             while ((tmp = reader.readLine()) != null) {
                 cont = cont + tmp + "\n";
             }
+            int windowW = ((rectWidth+strokeWidth)*lifeW);
+            if (windowW < 550) windowW = 550;
+            int windowH = (89 + (rectHeight+strokeWidth)*lifeH);
+            //if (windowH < 419) windowH = 419;
+
+
+            en = new LifeEngine(lifeH,lifeW);
+            rectangle = new Rectangle[lifeH][lifeW];
+            System.out.println(en.getMaxSizeX()+"x-y"+en.getMaxSizeY());
+            for (int i = 0; i < lifeH; i++) {
+                for (int j = 0; j < lifeW; j++) {
+                    rectangle[i][j] = new Rectangle(rectWidth, rectHeight);
+                    rectangle[i][j].setStrokeWidth(strokeWidth);
+                    //rectangle[i][j].addEventHandler(MouseEvent.MOUSE_DRAGGED, new FieldHandler(i, j, this));
+                }
+            }
+            Main.pane.setPrefWidth(windowW);
+            Main.pane.setPrefHeight(windowH);
+
+            Main.stage.setHeight(windowH+5);
+            Main.stage.setWidth(windowW);
+            //Main.stage = new Stage();
             en.clearField();
             en.setField(getField(cont));
-
             setRectangles();
+
+
             reader.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -255,6 +319,8 @@ public class Handler {
             ex.printStackTrace();
         }
         SettingsHandler.setHandler(this);
+        settingStage.initModality(Modality.WINDOW_MODAL);
+        settingStage.initOwner(Main.stage);
         settingStage.setScene(new Scene(pane));
         settingStage.setTitle("Settings");
         settingStage.show();
@@ -282,7 +348,7 @@ public class Handler {
         return content;
     }
 
-    static String[][] getField(String content) {
+    static String[][] getField(String content/*,int width,int height*/) {
         char charContent[] = content.toCharArray();
         int x = 0;
         int y = 0;
@@ -293,6 +359,13 @@ public class Handler {
         int xCount = 0;
         int yCount = 0;
         String field[][] = null;
+//        field = new String[height][width];
+//
+//        for (int k = 0;k < height;k++){
+//            for (int j = 0;j < width;j++){
+//                field[k][j] = "dead";
+//            }
+//        }
         for (int i = 0; i < charContent.length; i++) {
             if (charContent[i] == '_' && lineCount == 0) {
                 yc = true;
@@ -307,12 +380,12 @@ public class Handler {
                 lineCount++;
                 yCount = 0;
                 field = new String[x][y];
+
             } else if (charContent[i] == '\n' && lineCount >= 1) {
                 lineCount++;
                 xCount++;
                 yCount = 0;
             } else if (lineCount >= 1) {
-
                 if (charContent[i] == 'a') {
                     field[xCount][yCount] = "alive";
                     yCount++;
@@ -322,6 +395,7 @@ public class Handler {
                 }
             }
         }
+
         return field;
     }
 

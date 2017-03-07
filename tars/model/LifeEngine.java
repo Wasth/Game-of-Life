@@ -271,7 +271,12 @@ public class LifeEngine {
     public String[][] getField() {
         return field;
     }
-    public void setField(String field[][]){this.field = field;}
+    public void setField(String field[][]){
+        this.field = field;
+        if(this.field.length == field.length && this.field[0].length == field[0].length) {
+            System.out.println("YES");
+        }
+    }
     public void setValue(int x,int y,String value){
         this.field[x][y] = value;
     }

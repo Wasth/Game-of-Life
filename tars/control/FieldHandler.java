@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 import tars.model.LifeEngine;
 
 import java.text.Format;
+import java.util.ArrayList;
 
 /**
  * Created by tim on 21.01.16.
@@ -29,7 +30,9 @@ public class FieldHandler implements EventHandler<Event> {
         this.pane = hand.fieldPane;
     }
     public void handle(Event event) {
+//        ArrayList<String> selected =
         pressed = true;
+        System.out.println("DRAGGED");
         if(en.getField()[x][y].equals("alive")){
             en.setValue(x,y,"dead");
         }else{
