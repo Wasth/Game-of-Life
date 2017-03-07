@@ -84,7 +84,7 @@ public class Handler {
         rectangle = new Rectangle[lifeH][lifeW];
         fieldPane = new GridPane();
 
-        fieldPane.addEventHandler(MouseEvent.MOUSE_DRAGGED,new FieldHandler(0,0,this));
+        //fieldPane.addEventHandler(MouseEvent.MOUSE_DRAGGED,new FieldHandler(0,0,this));
 
         buttonPane.setHgap(15);
         pane.setAlignment(Pos.CENTER);
@@ -126,7 +126,7 @@ public class Handler {
             for (int j = 0; j < en.getMaxSizeY(); j++) {
                 rectangle[i][j] = new Rectangle(rectWidth, rectHeight);
                 rectangle[i][j].setStrokeWidth(strokeWidth);
-                //rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
+                rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
             }
         }
         en.clearField();
