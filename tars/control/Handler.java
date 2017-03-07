@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
@@ -28,6 +29,8 @@ import java.io.*;
 public class Handler {
     @FXML
     FlowPane pane;
+    @FXML
+    VBox box;
     @FXML
     volatile GridPane fieldPane;
     @FXML
@@ -70,11 +73,11 @@ public class Handler {
         int windowW = ((rectWidth+strokeWidth)*lifeW);
         if (windowW < 550) windowW = 550;
         int windowH = (89 + (rectHeight+strokeWidth)*lifeH);
-        Main.stage.setHeight(windowH);
-        Main.stage.setWidth(windowW);
+        Main.pane.setPrefHeight(windowH);
+        Main.pane.setPrefWidth(windowW);
         /*+(rectWidth/2)-strokeWidth*/
-        //Main.pane.setPrefWidth(windowW);
-        //Main.pane.setPrefHeight(windowH);
+        //box.setPrefWidth(windowW);
+        //box.setPrefHeight(windowH);
         System.out.println(windowW+" "+windowH);
         en = new LifeEngine(lifeH, lifeW);
         rectangle = new Rectangle[lifeH][lifeW];
