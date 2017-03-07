@@ -27,7 +27,7 @@ public class Main extends Application{
     }
     public void start(Stage primStage){
         stage = new Stage();
-        stage.setResizable(false);
+        //stage.setResizable(false);
         primStage = stage;
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("view/Root.fxml"));

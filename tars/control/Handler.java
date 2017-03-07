@@ -73,8 +73,8 @@ public class Handler {
         int windowW = ((rectWidth+strokeWidth)*lifeW);
         if (windowW < 550) windowW = 550;
         int windowH = (89 + (rectHeight+strokeWidth)*lifeH);
-        Main.pane.setPrefHeight(windowH);
-        Main.pane.setPrefWidth(windowW);
+        //Main.pane.setPrefHeight(windowH);
+        //Main.pane.setPrefWidth(windowW);
         /*+(rectWidth/2)-strokeWidth*/
         //box.setPrefWidth(windowW);
         //box.setPrefHeight(windowH);
@@ -240,11 +240,12 @@ public class Handler {
                     rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
                 }
             }
-//            Main.pane.setPrefWidth(windowW);
-//            Main.pane.setPrefHeight(windowH);
-            Main.stage.setHeight(windowH);
-            Main.stage.setWidth(windowW+(rectWidth/2)-strokeWidth);
+            Main.pane.setPrefWidth(windowW);
+            Main.pane.setPrefHeight(windowH);
 
+            Main.stage.setHeight(windowH+5);
+            Main.stage.setWidth(windowW);
+            //Main.stage = new Stage();
             en.clearField();
             en.setField(getField(cont));
             setRectangles();
