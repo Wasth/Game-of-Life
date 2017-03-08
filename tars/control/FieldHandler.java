@@ -1,12 +1,17 @@
 package tars.control;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import tars.model.LifeEngine;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.text.Format;
 import java.util.ArrayList;
 
@@ -32,7 +37,8 @@ public class FieldHandler implements EventHandler<Event> {
     public void handle(Event event) {
 //        ArrayList<String> selected =
         pressed = true;
-        System.out.println("DRAGGED");
+
+
         if(en.getField()[x][y].equals("alive")){
             en.setValue(x,y,"dead");
         }else{

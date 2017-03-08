@@ -2,12 +2,13 @@ package tars.control;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -22,6 +23,7 @@ import tars.Main;
 import tars.model.*;
 
 import java.io.*;
+import java.util.ArrayList;
 
 
 /**
@@ -54,6 +56,11 @@ public class Handler {
     int rectHeight = 15;
     int lifeH = 30;
     int lifeW = 50;
+    int rectX = 0;
+    int rectY = 0;
+    boolean isPressed = false;
+    ArrayList<Integer> wX = new ArrayList<>();
+    ArrayList<Integer> wY = new ArrayList<>();
     @FXML
     void initialize() throws InterruptedException {
         System.out.println("Init GUI");
@@ -84,7 +91,63 @@ public class Handler {
         rectangle = new Rectangle[lifeH][lifeW];
         fieldPane = new GridPane();
 
-        fieldPane.addEventHandler(MouseEvent.MOUSE_DRAGGED,new FieldHandler(0,0,this));
+        fieldPane.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                fieldPane.setCursor(Cursor.CROSSHAIR);
+            }
+        });
+//        fieldPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                isPressed = true;
+//                int x = (int) event.getY() / (rectWidth + strokeWidth);
+//                int y = (int) event.getX() / (rectWidth + strokeWidth);
+//                if (en.getField()[x][y].equals("alive")) {
+//                    en.setValue(x, y, "dead");
+//                } else {
+//                    en.setValue(x, y, "alive");
+//                }
+//                setRectangles();
+//            }
+//        });
+//
+//        fieldPane.setOnMouseReleased(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//
+////                for (int i = 0; i < wX.size();i++) {
+////                    //System.out.println("We draw");
+////                    int x = wX.get(i);
+////                    int y = wY.get(i);
+////                    if(en.getField()[x][y].equals("alive")){
+////                            en.setValue(x,y,"dead");
+////                        }else{
+////                            en.setValue(x,y,"alive");
+////                        }
+////                        setRectangles();
+////                }
+//                wX = null;
+//                wY = null;
+//            }
+//        });
+//        fieldPane.setOnMousePressed(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                wX = new ArrayList<>();
+//                wY = new ArrayList<>();
+//            }
+//        });
+        fieldPane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                int x = (int)event.getY() / (rectWidth+strokeWidth);
+                int y = (int)event.getX() / (rectWidth+strokeWidth);
+                wX =
+            }
+        });
+
+        //fieldPane.addEventHandler(MouseEvent.MOUSE_DRAGGED,new FieldHandler(0,0,this));
 
         buttonPane.setHgap(15);
         pane.setAlignment(Pos.CENTER);
@@ -126,6 +189,46 @@ public class Handler {
             for (int j = 0; j < en.getMaxSizeY(); j++) {
                 rectangle[i][j] = new Rectangle(rectWidth, rectHeight);
                 rectangle[i][j].setStrokeWidth(strokeWidth);
+                int finalI = i;
+                int finalJ = j;
+//                rectangle[i][j].setOnMouseDragEntered(new EventHandler<MouseDragEvent>() {
+//                    @Override
+//                    public void handle(MouseDragEvent event) {
+//                        rectX = finalI;
+//                        rectY = finalJ;
+//                        System.out.println("DragEntered "+rectX+":"+rectY);
+//                        if (en.getField()[rectX][rectY].equals("alive")) {
+//                            en.setValue(rectX, rectY, "dead");
+//                        } else {
+//                            en.setValue(rectX, rectY, "alive");
+//                        }
+//                        setRectangles();
+//                    }
+//                });
+//                rectangle[i][j].setOnMouseDragged(new EventHandler<MouseEvent>() {
+//                    @Override
+//                    public void handle(MouseEvent event) {
+//                        rectX = finalI;
+//                        rectY = finalJ;
+//                        System.out.println("Dragged "+rectX+":"+rectY);
+//                        if (en.getField()[rectX][rectY].equals("alive")) {
+//                                en.setValue(rectX, rectY, "dead");
+//                            } else {
+//                                en.setValue(rectX, rectY, "alive");
+//                            }
+//                            setRectangles();
+////                        if(isPressed) {
+////                            //System.out.println("PRESED");
+////                            if (en.getField()[rectX][rectY].equals("alive")) {
+////                                en.setValue(rectX, rectY, "dead");
+////                            } else {
+////                                en.setValue(rectX, rectY, "alive");
+////                            }
+////                            setRectangles();
+////                        }
+//                    }
+//                });
+
                 //rectangle[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, new FieldHandler(i, j, this));
             }
         }
